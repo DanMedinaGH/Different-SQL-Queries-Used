@@ -130,6 +130,70 @@ Division operator in T-SQL. <br/>
 Example: <br/>
 SELECT 2/2 -- Outputs 1. <br/><br/>
 
+## ORDER BY 
+Order datasets by a column
+
+Example: <br/>
+SELECT YEAR([date]) AS [year], COUNT(*) AS total_goals <br/>
+FROM CR7PortfolioProject.dbo.CR7Goals <br/>
+GROUP BY YEAR(date) <br/>
+ORDER BY YEAR(date);<br/>
+
+
+## ROUND
+Rounds a decimal number to a specified number of places.
+
+Example: <br/>
+SELECT ROUND((COUNT(*)/COUNT(DISTINCT YEAR([date])))/52.0, 2) AS average_weekly_goals <br/>
+FROM CR7PortfolioProject.dbo.CR7Goals <br/>
+
+## AVG
+Returns the average values from a numerical column
+
+Example:
+--Average minute Ronaldo scored in regular time. <br/>
+SELECT ROUND(AVG(CAST([minute] AS FLOAT)), 2) AS average_goal_minute_rt <br/>
+FROM CR7PortfolioProject.dbo.CR7Goals <br/>
+WHERE [minute] NOT LIKE '%+%' <br/>
+
+## LIKE
+Used for string comparison along with wildcard, '%', operator for "fuzzy matching".
+
+Example:
+--Average minute Ronaldo scored in regular time. <br/>
+SELECT ROUND(AVG(CAST([minute] AS FLOAT)), 2) AS average_goal_minute_rt <br/>
+FROM CR7PortfolioProject.dbo.CR7Goals <br/>
+WHERE [minute] NOT LIKE '%+%' <br/>
+
+## CASE
+Used to combine different "If, then" clauses.
+
+Example: <br/>
+SELECT <br/>
+&emsp;&emsp;		CASE <br/>
+&emsp;&emsp;&emsp;			WHEN [minute] LIKE '%+%' THEN 'Yes' <br/>
+&emsp;&emsp;&emsp;					WHEN [minute] NOT LIKE '%+%' THEN 'No' <br/>
+&emsp;&emsp;		END AS 'is_stoppage' <br/>
+	FROM CR7PortfolioProject.dbo.CR7Goals <br/>
+
+## DECLARE
+Used to declare a variable. Variables can store values that are used in other queries.
+
+Example: <br/>
+--Total different games scored<br/>
+DECLARE @total_games_scored INT = (SELECT COUNT(DISTINCT CAST([date] AS DATE)) FROM CR7PortfolioProject.dbo.CR7Goals); <br/>
+
+## TOP
+Limits the number of rows returned by query
+
+Example: <br/>
+--Selects main assister <br/>
+SELECT TOP 1 goal_assist AS assister, COUNT(*) AS no_assists <br/>
+	FROM CR7PortfolioProject.dbo.CR7Goals <br/>
+	WHERE goal_assist <> 'None' <br/>
+	GROUP BY goal_assist <br/>
+	ORDER BY no_assists DESC <br/>
+
 # Temp Table vs View vs CTE
 All three can be used for quick access to a subset of data, but each have different use-cases:
 
